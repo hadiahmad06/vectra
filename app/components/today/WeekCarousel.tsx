@@ -92,8 +92,8 @@ export function WeekCarousel({
           onDidAnimate={() => setWeekAnimationDirection(null)}
         >
           {Array.from({ length: 7 }).map((_, index) => {
-            const date = new Date();
-            date.setDate(date.getDate() - date.getDay() + index); // Start from Sunday
+            const date = new Date(startOfWeek);
+            date.setDate(date.getDate() + index);
             const dayName = date.getDate().toString();
 
             return (
