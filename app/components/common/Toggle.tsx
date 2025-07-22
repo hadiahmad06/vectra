@@ -4,7 +4,7 @@ import { MotiView } from 'moti';
 import { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 
-type ToggleOption = {
+export type ToggleOption = {
   key: string;
   label: string;
   disabled?: boolean;

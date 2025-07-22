@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
@@ -23,7 +21,9 @@ export default function GridPreview({ title, caption, footerValue, footerUnit, c
       </View>
       <View style={styles.footer}>
         <Text style={styles.footerValue}>{footerValue}</Text>
-        <Text style={styles.footerUnit}>{footerUnit}</Text>
+        <Text style={styles.footerUnit} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
+          {footerUnit}
+        </Text>
       </View>
     </View>
   );
@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
   footerUnit: {
+    flexShrink: 1,
     color: '#aaa',
     fontSize: 14,
     fontWeight: '400',

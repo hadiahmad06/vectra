@@ -4,16 +4,17 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 
-export default function LineChartPreview() {
+export default function LineChartPreview({color, data}: {color: string, data: number[]}) {
   const [parentWidth, setParentWidth] = useState(0);
   // const [parentHeight, setParentHeight] = useState(0);
 
-  const data = {
+  const chartData = {
     labels: [],
     datasets: [
       {
-        data: [22, 35, 45, 40, 54, 60, 60, 10, 22, 22],
-        color: () => '#6495ED',
+        // data: [22, 35, 45, 40, 54, 60, 60, 10, 22, 22],
+        data: data,
+        color: () => color,
         strokeWidth: 2,
       },
     ],
@@ -24,7 +25,7 @@ export default function LineChartPreview() {
     backgroundGradientTo: 'transparent',
     backgroundGradientFromOpacity: 0,
     backgroundGradientToOpacity: 0,
-    color: () => '#6495ED',
+    color: () => color,
     strokeWidth: 2,
     propsForDots: {
       r: '0',
@@ -42,9 +43,9 @@ export default function LineChartPreview() {
     >
       {parentWidth > 0 && (
         <LineChart
-          data={data}
+          data={chartData}
           // scale width by (dataset length / dataset length-1) to make up for the last point
-          width={parentWidth * ( data.datasets[0].data.length / (data.datasets[0].data.length - 1))} 
+          width={parentWidth * ( chartData.datasets[0].data.length / (chartData.datasets[0].data.length - 1))} 
           height={60} // MATCHES GridPreview content height, move to context later.
           withVerticalLabels={false}
           withHorizontalLabels={false}
