@@ -1,23 +1,19 @@
-import Colors from '@/constants/Colors';
 import { useWorkout } from '@/contexts/WorkoutContext';
 import { EnrichedExerciseSession } from '@/contexts/WorkoutProvider';
-import { ExerciseSession } from '@/utils/schema/ExerciseSession';
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { View, TextInput, Text, StyleSheet, useColorScheme, Dimensions, TouchableWithoutFeedback } from 'react-native';
-import { KeyboardAvoidingView, KeyboardStickyView, useKeyboardAnimation } from 'react-native-keyboard-controller';
+import { StyleSheet, useColorScheme, Dimensions } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
-import { Ionicons } from '@expo/vector-icons';
 import { MotiView } from 'moti';
-import Animated from 'react-native';
 import AddExerciseCard from '@/components/workout/AddExerciseCard';
 import ExerciseCard from '@/components/workout/ExerciseCard';
 
 type ExerciseSlide = EnrichedExerciseSession | 'plus';
 
 export default function WorkoutSession() {
-  const { workout, exercises, addExercise, removeExercise} = useWorkout();
+  const { exercises } = useWorkout();
   const colorScheme = useColorScheme();
-  const { width, height } = Dimensions.get('window');
+  const { width } = Dimensions.get('window');
 
   const [currentExerciseId, setCurrentExerciseId] = useState<string | null>(null);
 

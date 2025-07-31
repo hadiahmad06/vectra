@@ -5,7 +5,7 @@ export const ExerciseSessionSchema = z.object({
   workout_id: z.string().uuid(),
   exercise_id: z.string().uuid(),
   order: z.number().min(1),
-  notes: z.string().optional(),
+  notes: z.string().default(''),
 //   created_at: z.string().datetime(),
 //   updated_at: z.string().datetime(),
 });

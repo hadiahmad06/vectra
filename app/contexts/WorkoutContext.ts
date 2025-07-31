@@ -6,11 +6,12 @@ import { z } from 'zod';
 import { EnrichedExerciseSession } from './WorkoutProvider';
 
 type WorkoutContextType = {
+  isLive: boolean;
   workout: WorkoutSession | null;
   exercises: EnrichedExerciseSession[];
   sets: Record<string, SetSession[]>; // key = exercise_session_id
   setWorkout: (workout: WorkoutSession | null) => void;
-  startWorkout: (title?: string, exercises?: string[]) => Promise<void>;
+  startWorkout: (exercises?: string[], isLive?: boolean) => Promise<void>;
   pushWorkout: () => Promise<void>;
   cancelWorkout: () => void;
   addExercise: (exerciseId: string) => void;

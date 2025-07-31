@@ -9,7 +9,7 @@ export const SetSessionSchema = z.object({
   reps: z.number().min(0).optional(),
   toRecord: z.boolean(),
   rir: z.number().optional(),
-  notes: z.string().optional(),
+  notes: z.string().default(''),
 //   created_at: z.string().datetime(),
 //   updated_at: z.string().datetime(),
 });

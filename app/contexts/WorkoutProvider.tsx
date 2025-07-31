@@ -16,21 +16,23 @@ export interface EnrichedExerciseSession extends ExerciseSession {
 
 
 export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [isLive, setIsLive] = useState<boolean>(true);
   const [workout, setWorkout] = useState<WorkoutSession | null>(null);
   const [exercises, setExercises] = useState<EnrichedExerciseSession[]>([]);
   const [sets, setSets] = useState<Record<string, SetSession[]>>({});
 
-  const startWorkout = async (title?: string, exercises: string[] = []) => {
+  const startWorkout = async (exercises: string[] = [], isLive: boolean = false) => {
     const now = new Date().toISOString();
     const workoutId = uuidv4();
     const newWorkout: WorkoutSession = {
       id: workoutId,
       date: now,
-      title
+      title: '',
+      notes: ''
     };
 
     setWorkout(newWorkout);
-
+    setIsLive(isLive);
     setExercises([]);
 
     for (let i = 0; i < exercises.length; i++) {
@@ -45,6 +47,7 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
       id: uuidv4(),
       workout_id: workout?.id ?? '',
       exercise_id: exerciseId,
+      notes: '',
     };
     // console.log("inserting exercise:", exerciseId);
 
@@ -185,6 +188,7 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
   return (
     <WorkoutContext.Provider
       value={{
+        isLive,
         workout,
         exercises,
         sets,

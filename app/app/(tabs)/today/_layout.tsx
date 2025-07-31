@@ -8,7 +8,7 @@ import { useWorkout } from '@/contexts/WorkoutContext';
 import { useRouter } from 'expo-router';
 import { insertWorkout } from '@/repositories/workouts/Workout';
 
-function CustomHeader() {
+function CustomHeader({ isLive = false, isReviewing = false }: { isLive?: boolean, isReviewing?: boolean }) {
   const router = useRouter();
   const [title, setTitle] = useState('');
   const [elapsed, setElapsed] = useState('...');
@@ -23,7 +23,6 @@ function CustomHeader() {
       ? new Date(workout.date).getTime()
       : Date.now();
 
-    // Set immediately
     const updateElapsed = () => {
       const now = Date.now();
       const diff = Math.floor((now - startTime) / 1000);
@@ -34,9 +33,11 @@ function CustomHeader() {
 
     updateElapsed(); // call immediately
 
-    const interval = setInterval(updateElapsed, 1000);
-    return () => clearInterval(interval);
-  }, []);
+    if (isLive) {
+      const interval = setInterval(updateElapsed, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [isLive, workout?.date]);
 
   return (
     <SafeAreaView edges={['top']}>
@@ -60,12 +61,22 @@ function CustomHeader() {
               textAlign: 'center',
             }}
           />
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 4 }}>
+          {isLive && <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 4 }}>
             <Ionicons name="time-outline" size={14} color={tintColor} />
             <Text style={{ color: tintColor, fontSize: 14 }}>{elapsed}</Text>
-          </View>
+          </View>}
         </View>
-        <Pressable onPress={() => {pushWorkout(); router.back()}}>
+        <Pressable
+          onPress={() => {
+            if (isLive) {
+              pushWorkout(); router.back()
+            } else if(isReviewing) {
+              pushWorkout(); router.back(); router.back();
+            } else {
+              router.push('/(tabs)/today/finalize-workout');
+            }
+          }}
+        >
           <Ionicons name="checkmark" size={24} color={tintColor} />
         </Pressable>
       </View>
@@ -75,16 +86,25 @@ function CustomHeader() {
 
 export default function HomeLayout() {
   const colorScheme = useColorScheme();
+  const { isLive } = useWorkout();
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={{ flex: 1 }}>
-        <Stack
-          screenOptions={{
-            header: () => <CustomHeader />,
-            headerShown: true,
-          }}
-        >
+        <Stack>
           <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="workout-session"
+            options={{
+              header: () => <CustomHeader isLive={isLive} isReviewing={false}/>, // Replace with your ScreenOneHeader if needed
+            }}
+          />
+          <Stack.Screen
+            name="finalize-workout"
+            options={{
+              header: () => <CustomHeader isLive={isLive} isReviewing={true}/>, // Replace with your ScreenOneHeader if needed
+            }}
+          />
         </Stack>
       </View>
     </TouchableWithoutFeedback>

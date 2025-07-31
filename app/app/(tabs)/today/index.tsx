@@ -114,7 +114,13 @@ export default function TabOneScreen() {
         { !workout ? (
           <View style={styles.actionRow}>
             {!isToday(selectedDate) && (
-              <TouchableOpacity style={styles.actionButtonSecondary}>
+              <TouchableOpacity 
+                onPress={async () => {
+                  router.push('/(tabs)/today/workout-session')
+                  await startWorkout(['Barbell Bench Press'], false);
+                }}
+                style={styles.actionButtonSecondary}
+              >
                 <Text style={styles.actionButtonText}>
                   Log Workout {format(selectedDate, 'M/d')}
                 </Text>
@@ -123,7 +129,7 @@ export default function TabOneScreen() {
             <TouchableOpacity
               onPress={async () => {
                 router.push('/(tabs)/today/workout-session')
-                await startWorkout(undefined, ['Bench Press']);
+                await startWorkout(['Barbell Bench Press'], true);
               }}
               style={styles.actionButtonPrimary}
             >
